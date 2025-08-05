@@ -17,7 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->smallInteger('status')->default(\App\Models\Landlord\User::PENDING_EMAIL_VERIFICATION);
+            $table->jsonb('meta')->nullable();
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
 

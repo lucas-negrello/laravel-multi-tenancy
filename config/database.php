@@ -97,6 +97,36 @@ return [
             'sslmode' => 'prefer',
         ],
 
+        'landlord' => [
+            'driver' => 'pgsql',
+            'url' => env('DB_URL'),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '5432'),
+            'database' => env('DB_DATABASE', 'laravel'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => env('DB_CHARSET', 'utf8'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => 'public',
+            'sslmode' => 'prefer',
+        ],
+
+        'tenant' => [
+            'driver' => 'pgsql',
+            'url' => env('DB_TENANT_URL'),
+            'host' => env('DB_TENANT_HOST', '127.0.0.1'),
+            'port' => env('DB_TENANT_PORT', '5432'),
+            'database' => env('DB_TENANT_DATABASE', 'laravel'),
+            'username' => env('DB_TENANT_USERNAME', 'root'),
+            'password' => env('DB_TENANT_PASSWORD', ''),
+            'charset' => env('DB_TENANT_CHARSET', 'utf8'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => 'public',
+            'sslmode' => 'prefer',
+        ],
+
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DB_URL'),
