@@ -27,13 +27,13 @@ trait HasRoles
     public function hasRole(int|array|string $roles): bool
     {
         if (is_array($roles)) {
-            return $this->roles()->whereIn('name', $roles)->exists();
+            return $this->roles()->whereIn('roles.name', $roles)->exists();
         }
         if (is_string($roles)) {
-            return $this->roles()->where('name', $roles)->exists();
+            return $this->roles()->where('roles.name', $roles)->exists();
         }
         if (is_int($roles)) {
-            return $this->roles()->where('id', $roles)->exists();
+            return $this->roles()->where('roles.id', $roles)->exists();
         }
         return false;
     }

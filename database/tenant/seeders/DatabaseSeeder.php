@@ -1,5 +1,6 @@
 <?php
 
+namespace Database\Tenant\Seeders;
 
 use Illuminate\Database\Seeder;
 

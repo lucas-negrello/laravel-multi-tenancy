@@ -3,12 +3,11 @@
 namespace App\Models\Tenant;
 
 use App\Models\Base\TenantModel;
-use App\Traits\HasRegisters;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Space extends TenantModel
 {
-    use SoftDeletes, HasRegisters;
+    use SoftDeletes;
 
     const
         STATUS_PENDING = 0,

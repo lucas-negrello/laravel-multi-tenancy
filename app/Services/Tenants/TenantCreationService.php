@@ -9,7 +9,6 @@ use App\Models\Tenant\Space;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use function App\Services\getKey;
 
 class TenantCreationService
 {
@@ -27,8 +26,6 @@ class TenantCreationService
         $this->configureTenantSpace();
 
         $this->activateTenant();
-
-        dump($this->errors);
 
         if (!empty($this->errors)) {
             $this->rollbackTenant();
@@ -56,12 +53,12 @@ class TenantCreationService
 
         $userData = !empty($data['meta']) && !empty($data['meta']['user']) ? $data['meta']['user'] : [];
 
-        $spaceData = !empty($data['meta']) && !empty($data['meta']['space']) ? $data['meta']['space'] : [];
+        $spaceData = !empty($data['meta']) && !empty($data['meta']['spaces']) ? $data['meta']['spaces'] : [];
 
         $this->data = [
             'tenant'  => $tenantData,
             'user'    => $userData,
-            'space'   => $spaceData,
+            'spaces'   => $spaceData,
         ];
 
         return $this;
@@ -173,12 +170,12 @@ class TenantCreationService
     protected function configureTenantSpace(): void
     {
         try {
-            if (empty($this->data['space'])) return;
+            if (empty($this->data['spaces'])) return;
 
             $space = Space::firstOrCreate(
-                ['name' => $this->data['space']['name']],
+                ['name' => $this->data['spaces']['name']],
                 [
-                    'description' => $this->data['space']['description'] ?? null,
+                    'description' => $this->data['spaces']['description'] ?? null,
                     'status'      => Space::STATUS_ACTIVE,
                 ]
             );
