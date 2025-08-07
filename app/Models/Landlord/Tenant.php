@@ -2,6 +2,7 @@
 
 namespace App\Models\Landlord;
 
+use App\Traits\HasDefaultStatus;
 use App\Traits\HasRegisters;
 use App\Traits\TenantSchema;
 use Illuminate\Database\Eloquent\Model;
@@ -11,22 +12,7 @@ use Illuminate\Database\Query\Builder;
 
 class Tenant extends Model
 {
-    use TenantSchema, SoftDeletes, HasRegisters;
-
-    const
-        STATUS_PENDING = 0,
-        STATUS_ACTIVE = 1,
-        STATUS_INACTIVE = 2,
-        STATUS_SUSPENDED = 3,
-        STATUS_DELETED = -1;
-
-    const STATUSES = [
-        self::STATUS_PENDING,
-        self::STATUS_ACTIVE,
-        self::STATUS_INACTIVE,
-        self::STATUS_SUSPENDED,
-        self::STATUS_DELETED,
-    ];
+    use TenantSchema, SoftDeletes, HasRegisters, HasDefaultStatus;
 
     protected $fillable = [
         'schema',
