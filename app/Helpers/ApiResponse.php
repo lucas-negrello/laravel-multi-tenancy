@@ -6,7 +6,7 @@ use Illuminate\Http\JsonResponse;
 
 class ApiResponse
 {
-    public static function apiSuccess($message, $data = null, $meta = null, $code = 200): JsonResponse
+    public static function successResponse($message, $data = null, $meta = null, $code = 200): JsonResponse
     {
         $response = [
             'success' => true,
@@ -25,7 +25,7 @@ class ApiResponse
         return response()->json($response, $code);
     }
 
-    public static function apiError($message, $code = 400, $errors = null): JsonResponse
+    public static function errorResponse($message, $code = 400, $errors = null): JsonResponse
     {
         $response = [
             'success' => false,
