@@ -96,7 +96,7 @@ class User extends Authenticatable
     protected function isRootUser(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->hasRole($this->rootRoles()),
+            get: fn () => $this->isRoot(),
         );
     }
 

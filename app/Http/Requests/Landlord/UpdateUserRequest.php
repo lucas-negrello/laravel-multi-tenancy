@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Landlord;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -11,7 +12,8 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        $user = $this->route('user');
+        return Gate::allows('update', $user);
     }
 
     /**
@@ -22,7 +24,8 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'meta' => ['nullable', 'array']
         ];
     }
 }

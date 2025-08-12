@@ -16,7 +16,7 @@ trait HasRoles
 
     public function isRoot(): bool
     {
-        return $this->hasRole('root');
+        return $this->hasRole($this->rootRoles());
     }
 
     public function rootRoles($key = 'name')

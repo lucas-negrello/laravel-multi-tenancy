@@ -87,27 +87,27 @@ class RootSetupSeeder extends Seeder
 
         $users = array_merge($rootUsers, $tenantUsers);
 
-        foreach ($users as $user) {
-            $user = User::firstOrCreate(
-                ['email' => $user['email']],
+        foreach ($users as $userData) {
+            $userModel = User::firstOrCreate(
+                ['email' => $userData['email']],
                 [
-                    'name' => $user['name'],
+                    'name' => $userData['name'],
                     'status' => User::ACTIVE,
-                    'email_verified_at' => $user['email_verified_at'],
-                    'password' => $user['password'],
+                    'email_verified_at' => $userData['email_verified_at'],
+                    'password' => $userData['password'],
                 ]
             );
-            if (!empty($user['roles'])) {
-                foreach ($user['roles'] as $role) {
-                    $role = Role::where('name', $role)->first();
-                    if ($role) {
-                        $user->assignRole($role);
+            if (!empty($userData['roles'])) {
+                foreach ($userData['roles'] as $roleName) {
+                    $roleModel = Role::where('name', $roleName)->first();
+                    if ($roleModel) {
+                        $userModel->assignRole($roleModel->name);
                     }
                 }
             }
-            if (!empty($user['permissions'])) {
+            if (!empty($userData['permissions'])) {
                 $permissionsIds = [];
-                foreach ($user['permissions'] as $permission => $actions) {
+                foreach ($userData['permissions'] as $permission => $actions) {
                     foreach ($actions as $action) {
                         $permissionModel = Permission::where('name', "{$permission}_{$action}")->first();
                         if ($permissionModel) {
@@ -115,7 +115,9 @@ class RootSetupSeeder extends Seeder
                         }
                     }
                 }
-                $user->permissions()->syncWithoutDetaching($permissionsIds);
+                if (!empty($permissionsIds)) {
+                    $userModel->permissions()->syncWithoutDetaching($permissionsIds);
+                }
             }
         }
     }

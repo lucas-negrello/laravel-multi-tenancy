@@ -42,6 +42,7 @@ class Role extends LandlordModel
     protected $fillable = [
         'name',
         'description',
+        'is_tenant_base',
         'created_by',
         'updated_by',
     ];
