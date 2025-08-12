@@ -11,4 +11,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
 
 
+    Route::group([
+        'prefix' => 'admin',
+        'as' => 'admin.',
+    ], function() {
+
+    });
+
+    Route::group([
+        'prefix' => 'tenant',
+        'as' => 'tenant.',
+        'middleware' => ['tenant.context'],
+    ], function() {
+
+    });
+
 });

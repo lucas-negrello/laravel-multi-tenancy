@@ -99,4 +99,24 @@ class User extends Authenticatable
             get: fn () => $this->hasRole($this->rootRoles()),
         );
     }
+
+    public function permissionsFromRoles()
+    {
+        $this->loadMissing('roles.permissions');
+
+        return $this->roles
+            ->flatMap->permissions
+            ->unique('id')
+            ->values();
+    }
+
+    public function allPermissions()
+    {
+        $this->loadMissing(['permissions', 'roles.permissions']);
+
+        return $this->permissions
+            ->concat($this->permissionsFromRoles())
+            ->unique('id')
+            ->values();
+    }
 }

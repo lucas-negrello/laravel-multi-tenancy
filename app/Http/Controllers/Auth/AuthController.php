@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\Landlord\Role;
 use App\Models\Landlord\User;
+use App\Services\Auth\MeService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -62,10 +63,12 @@ class AuthController extends Controller
         return successResponse('Successfully logged out', [], [], ResponseAlias::HTTP_OK);
     }
 
-    public function me()
+    public function me(Request $request, MeService $meService)
     {
+        $userData = $meService->getMeInfo($request);
+
         return successResponse('User data retrieved successfully',
-            ['user' => auth()->user()],
+            $userData,
             [],
             ResponseAlias::HTTP_OK,
         );

@@ -16,7 +16,7 @@ class TenantResolverService
         $origin = $request->header('Origin');
 
         if (!empty($tenantIdentifier)) {
-            $tenant = Tenant::find($tenantIdentifier);
+            $tenant = Tenant::where('schema', $tenantIdentifier)->first();
         } else {
             $tenant = Tenant::whereIn('domain', [$origin, $host])->first();
         }
@@ -28,7 +28,7 @@ class TenantResolverService
     {
         $user = Auth::user();
 
-        if ($user && $user->hasRole([...Role::ROOT_ROLES])) return true;
+        if ($user && $user->hasRole(Role::ROOT_ROLES)) return true;
 
         return $user && $user->tenants()->where('tenants.id', $tenant->getKey())->exists();
     }

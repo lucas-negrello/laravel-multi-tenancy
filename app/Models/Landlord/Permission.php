@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Permission extends LandlordModel
 {
-
     const BASE_PERMISSIONS = [
         self::CREATE,
         self::READ,
