@@ -8,6 +8,7 @@ use App\Http\Requests\Landlord\StoreUserRequest;
 use App\Http\Requests\Landlord\UpdateUserRequest;
 use App\Models\Landlord\Role;
 use App\Models\Landlord\User;
+use App\Services\Utils\Landlord\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -21,17 +22,15 @@ class UserController extends Controller
     {
         $this->authorize('viewAny', User::class);
 
-        $query = User::with([
-            'roles',
-            'permissions',
-            'tenants'
-        ]);
+        $query = User::query();
 
         $users = $this->paginateIndex($request, $query);
 
+        $formattedUsers = UserService::usersToArray($users['data']);
+
         return ApiResponse::successResponse(
             'User list retrieved successfully.',
-            $users['data'],
+            $formattedUsers,
             $users['pagination_meta'],
             ResponseAlias::HTTP_OK
         );
@@ -67,15 +66,11 @@ class UserController extends Controller
     {
         $this->authorize('view', $user);
 
-        $user->load([
-            'roles',
-            'permissions',
-            'tenants'
-        ]);
+        $formattedUser = UserService::userToArray($user);
 
         return ApiResponse::successResponse(
             'User retrieved successfully.',
-            $user,
+            $formattedUser,
             null,
             ResponseAlias::HTTP_OK
         );

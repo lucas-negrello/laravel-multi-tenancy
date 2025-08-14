@@ -75,7 +75,8 @@ class User extends Authenticatable
     }
 
     protected $appends = [
-        'is_root_user'
+        'is_root_user',
+        'status_ui',
     ];
 
     protected static function booted(): void
@@ -100,23 +101,41 @@ class User extends Authenticatable
         );
     }
 
-    public function permissionsFromRoles()
+    protected function statusUi(): Attribute
     {
-        $this->loadMissing('roles.permissions');
-
-        return $this->roles
-            ->flatMap->permissions
-            ->unique('id')
-            ->values();
+        return Attribute::make(
+            get: fn () => [
+                'id' => $this->status,
+                'description' => $this->statusDescription(),
+                'color' => $this->statusColor(),
+            ]
+        );
     }
 
-    public function allPermissions()
+    public function statusColor(): string
     {
-        $this->loadMissing(['permissions', 'roles.permissions']);
+        return match ($this->status) {
+            self::INACTIVE => 'contrast',
+            self::ACTIVE => 'success',
+            self::PENDING_EMAIL_VERIFICATION, self::PASSWORD_RESET_REQUIRED => 'info',
+            self::PENDING_APPROVAL => 'warning',
+            self::SUSPENDED, self::BANNED, self::LOCKED => 'danger',
+            default => 'default',
+        };
+    }
 
-        return $this->permissions
-            ->concat($this->permissionsFromRoles())
-            ->unique('id')
-            ->values();
+    public function statusDescription(): string
+    {
+        return match ($this->status) {
+            self::INACTIVE => 'Inactive',
+            self::ACTIVE => 'Active',
+            self::PENDING_EMAIL_VERIFICATION => 'Pending Email Verification',
+            self::PENDING_APPROVAL => 'Pending Approval',
+            self::SUSPENDED => 'Suspended',
+            self::BANNED => 'Banned',
+            self::PASSWORD_RESET_REQUIRED => 'Password Reset Required',
+            self::LOCKED => 'Locked',
+            default => 'Unknown',
+        };
     }
 }

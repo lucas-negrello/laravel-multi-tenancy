@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
 
@@ -68,6 +69,40 @@ trait HasDefaultStatus
                 }
             });
         }
+    }
+
+    public function statusUi(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => [
+                'id' => $this->status,
+                'description' => $this->statusDescription(),
+                'color' => $this->statusColor(),
+            ]
+        );
+    }
+
+    public function statusDescription(): string
+    {
+        return match ($this->status) {
+            self::STATUS_PENDING => 'Pending',
+            self::STATUS_ACTIVE => 'Active',
+            self::STATUS_INACTIVE => 'Inactive',
+            self::STATUS_SUSPENDED => 'Suspended',
+            self::STATUS_DELETED => 'Deleted',
+            default => 'Unknown',
+        };
+    }
+
+    public function statusColor(): string
+    {
+        return match ($this->status) {
+            self::STATUS_PENDING, self::STATUS_SUSPENDED => 'warning',
+            self::STATUS_ACTIVE => 'success',
+            self::STATUS_INACTIVE => 'contrast',
+            self::STATUS_DELETED => 'danger',
+            default => 'default',
+        };
     }
 
     protected static function usesSoftDeletes(): bool

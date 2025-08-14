@@ -7,12 +7,13 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\Landlord\Role;
 use App\Models\Landlord\User;
-use App\Services\Auth\MeService;
+use App\Services\Utils\Auth\MeService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
+
 class AuthController extends Controller
 {
     public function register(RegisterRequest $request)
