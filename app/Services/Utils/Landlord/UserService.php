@@ -32,7 +32,7 @@ class UserService
     /**
      * Convert a collection of User models to an array of arrays including roles, permissions, and tenants.
      */
-    public static function usersToArray(Collection $users, bool $relations = false): array
+    public static function usersToArray(Collection|array $users, bool $relations = false): array
     {
         return collect($users)->map(function ($user) use ($relations) {
             return self::userToArray($user, $relations);

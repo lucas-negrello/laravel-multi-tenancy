@@ -32,9 +32,10 @@ class Tenant extends Model
     {
         return $this->belongsToMany(
             User::class,
-            'tenant_user',
+            'tenants_users',
             'tenant_id',
-            'user_id');
+            'user_id')
+            ->withTimestamps();
     }
 
     public function scopePublic(Builder $query): Builder

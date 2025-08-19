@@ -22,7 +22,7 @@ class UserController extends Controller
     {
         $this->authorize('viewAny', User::class);
 
-        $query = User::query();
+        $query = User::query()->verifiedTenantUser();
 
         $users = $this->paginateIndex($request, $query);
 
@@ -45,6 +45,10 @@ class UserController extends Controller
             ...$request->validated(),
             'email_verified_at' => Carbon::now(),
         ]);
+
+        if ($tenant = tenant()) {
+            $user->tenants()->syncWithoutDetaching([$tenant->getKey()]);
+        }
 
         if ($request->input('role'))
             $user->assignRole($request->input('role'));
@@ -96,13 +100,15 @@ class UserController extends Controller
      */
     public function destroy(Request $request, User $user)
     {
-        if (!$request->has('force') && $request->get('force') === 'true') {
-            $this->authorize('delete', $user);
-            $user->delete();
-        }
-        else {
+        if ($request->has('force') && $request->get('force') === 'true') {
             $this->authorize('forceDelete', $user);
             $user->forceDelete();
+        } else {
+            $this->authorize('delete', $user);
+            $tenant = tenant();
+            $user->detachTenant($tenant->getKey());
+            if ($user->tenants()->count() === 0)
+                $user->delete();
         }
 
         return ApiResponse::successResponse(

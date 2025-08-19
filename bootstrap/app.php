@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\LandlordContextMiddleware;
 use App\Http\Middleware\TenantContextMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -15,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'tenant.context' => TenantContextMiddleware::class,
+            'landlord.context' => LandlordContextMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

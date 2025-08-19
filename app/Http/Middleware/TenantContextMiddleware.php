@@ -21,9 +21,11 @@ class TenantContextMiddleware
         if (!$tenant)
             return errorResponse('Tenant not found.', 404);
 
-        $tenant->makeCurrent();
+        app()->instance('tenant', $tenant);
 
-        if (!TenantResolverService::userHasAccess($tenant))
+        $tenant->makeCurrent(true);
+
+        if (!TenantResolverService::userHasAccess($request, $tenant))
             return errorResponse('Access denied for this tenant.', 403);
 
         return $next($request);

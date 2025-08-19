@@ -15,6 +15,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::group([
         'prefix' => 'admin',
         'as' => 'admin.',
+        'middleware' => ['landlord.context'],
     ], function() {
         Route::apiResources([
             'users' => UserController::class
@@ -26,7 +27,9 @@ Route::middleware('auth:sanctum')->group(function () {
         'as' => 'tenant.',
         'middleware' => ['tenant.context'],
     ], function() {
-
+        Route::apiResources([
+            'users' => UserController::class
+        ]);
     });
 
 });

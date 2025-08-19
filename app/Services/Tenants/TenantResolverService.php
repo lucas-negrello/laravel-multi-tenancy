@@ -6,6 +6,7 @@ use App\Models\Landlord\Role;
 use App\Models\Landlord\Tenant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class TenantResolverService
 {
@@ -24,7 +25,7 @@ class TenantResolverService
         return $tenant;
     }
 
-    public static function userHasAccess(Tenant $tenant): bool
+    public static function userHasAccess(Request $request, Tenant $tenant): bool
     {
         $user = Auth::user();
 
