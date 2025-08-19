@@ -6,7 +6,6 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Landlord\StoreUserRequest;
 use App\Http\Requests\Landlord\UpdateUserRequest;
-use App\Models\Landlord\Role;
 use App\Models\Landlord\User;
 use App\Services\Utils\Landlord\UserService;
 use Carbon\Carbon;
@@ -50,10 +49,7 @@ class UserController extends Controller
             $user->tenants()->syncWithoutDetaching([$tenant->getKey()]);
         }
 
-        if ($request->input('role'))
-            $user->assignRole($request->input('role'));
-        else
-            $user->assignRole(Role::USER);
+        UserService::attachRoleFromStoreRequest($request, $user);
 
         return ApiResponse::successResponse(
             'User created successfully.',

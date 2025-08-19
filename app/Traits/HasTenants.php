@@ -2,24 +2,12 @@
 
 namespace App\Traits;
 
-use App\Models\Landlord\Tenant;
 use App\Models\Landlord\User;
 use App\Services\Utils\Landlord\UserService;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 trait HasTenants
 {
-    public function tenants(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            Tenant::class,
-            'tenants_users',
-            'user_id',
-            'tenant_id'
-        )->withTimestamps();
-    }
-
     public function hasTenant(string $tenantId): bool
     {
         return $this->tenants()->where('tenants.id', $tenantId)->exists();

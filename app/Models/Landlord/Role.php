@@ -3,10 +3,12 @@
 namespace App\Models\Landlord;
 
 use App\Models\Base\LandlordModel;
+use App\Traits\HasTenants;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Role extends LandlordModel
 {
+    use HasTenants;
 
     const
         ROOT = 'root',
@@ -54,5 +56,12 @@ class Role extends LandlordModel
             'role_permissions',
             'role_id',
             'permission_id');
+    }
+
+    public function tenants()
+    {
+        return Tenant::whereHas('users.roles', function ($q) {
+            $q->where('roles.id', $this->getKey());
+        })->get();
     }
 }

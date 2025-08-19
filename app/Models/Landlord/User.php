@@ -7,6 +7,7 @@ use App\Traits\HasPermissions;
 use App\Traits\HasRoles;
 use App\Traits\HasTenants;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -86,6 +87,18 @@ class User extends Authenticatable
             $user->permissions()->detach();
         });
     }
+
+
+    public function tenants(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Tenant::class,
+            'tenants_users',
+            'user_id',
+            'tenant_id'
+        )->withTimestamps();
+    }
+
 
     protected function password(): Attribute
     {

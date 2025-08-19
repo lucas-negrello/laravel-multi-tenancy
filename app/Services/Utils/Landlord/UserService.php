@@ -2,6 +2,7 @@
 
 namespace App\Services\Utils\Landlord;
 
+use App\Models\Landlord\Role;
 use App\Models\Landlord\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -118,6 +119,17 @@ class UserService
             ->concat($permissionsFromRoles)
             ->unique('id')
             ->values();
+    }
+
+    public static function attachRoleFromStoreRequest(Request $request, User $user)
+    {
+        if ($request->input('role'))
+            $user->assignRole($request->input('role'));
+        if (tenant())
+            $user->assignRole(Role::USER);
+        else {
+            $user->assignRole(Role::ROOT_USER);
+        }
     }
 
 }

@@ -25,12 +25,19 @@ class StoreUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'role' => ['nullable', 'string', Rule::in(Role::ROLES)],
             'meta' => ['nullable', 'array']
         ];
+
+        if (tenant()) {
+            $rules['role'] = ['nullable', 'string', Rule::in(Role::TENANT_ROLES)];
+        } else {
+            $rules['role'] = ['nullable', 'string', Rule::in(Role::ROLES)];
+        }
+
+        return $rules;
     }
 }
