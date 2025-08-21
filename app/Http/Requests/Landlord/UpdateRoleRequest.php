@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Landlord;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class UpdateRoleRequest extends FormRequest
 {
@@ -11,7 +12,9 @@ class UpdateRoleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        $role = $this->route('role');
+        if (tenant() && !$role->is_tenant_base) return false;
+        return Gate::allows('update', $role);
     }
 
     /**
@@ -21,8 +24,19 @@ class UpdateRoleRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+        $rules = [
+            'name' => ['nullable', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:1000'],
         ];
+
+        if (!tenant()) {
+            $rules['tenant_id'] = ['nullable', 'integer', 'exists:tenants,id'];
+            $rules['is_tenant_base'] = ['nullable', 'boolean'];
+        } else {
+            $rules['tenant_id'] = ['missing'];
+            $rules['is_tenant_base'] = ['missing'];
+        }
+
+        return $rules;
     }
 }

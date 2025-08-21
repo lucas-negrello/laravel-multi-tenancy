@@ -3,13 +3,12 @@
 namespace App\Models\Landlord;
 
 use App\Models\Base\LandlordModel;
-use App\Traits\HasTenants;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Role extends LandlordModel
 {
-    use HasTenants;
-
     const
         ROOT = 'root',
         ROOT_ADMIN = 'root_admin',
@@ -42,6 +41,7 @@ class Role extends LandlordModel
     ];
 
     protected $fillable = [
+        'tenant_id',
         'name',
         'description',
         'is_tenant_base',
@@ -58,10 +58,19 @@ class Role extends LandlordModel
             'permission_id');
     }
 
-    public function tenants()
+    public function tenant(): BelongsTo
     {
-        return Tenant::whereHas('users.roles', function ($q) {
-            $q->where('roles.id', $this->getKey());
-        })->get();
+        return $this->belongsTo(Tenant::class);
+    }
+
+    /**
+     * Scope a query to only include tenant base roles.
+     *
+     * @param Builder $query
+     * @return Builder|Role
+     */
+    public function scopeIsTenantBase(Builder $query): Builder | Role
+    {
+        return $query->where('is_tenant_base', true);
     }
 }

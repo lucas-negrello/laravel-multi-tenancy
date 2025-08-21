@@ -95,7 +95,7 @@ class RolePermissionSeeder extends Seeder
         $tenantRoleAllowedActions = [
             'admin' => [
                 'users' => ['view', 'create', 'update', 'delete'],
-                'roles' => ['view', 'create', 'update'],
+                'roles' => ['view', 'create', 'update', 'delete'],
                 'permissions' => ['view', 'create', 'update'],
                 'tenants' => ['view', 'create', 'update'],
                 'spaces' => ['view', 'create', 'update', 'delete'],

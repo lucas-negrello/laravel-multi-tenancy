@@ -7,6 +7,7 @@ use App\Traits\HasRegisters;
 use App\Traits\TenantSchema;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
 
@@ -36,6 +37,11 @@ class Tenant extends Model
             'tenant_id',
             'user_id')
             ->withTimestamps();
+    }
+
+    public function roles(): HasMany
+    {
+        $this->hasMany(Role::class);
     }
 
     public function scopePublic(Builder $query): Builder

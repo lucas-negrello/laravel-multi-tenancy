@@ -64,8 +64,10 @@ class Permission extends LandlordModel
 
     public function tenants()
     {
-        return Tenant::whereHas('users.permissions', function ($q) {
-            $q->where('permissions.id', $this->getKey());
+        return Tenant::whereHas('users.roles', function ($q) {
+            $q->whereHas('roles.permissions', function ($q) {
+                $q->where('permissions.id', $this->getKey());
+            });
         })->get();
     }
 }

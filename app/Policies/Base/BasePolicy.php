@@ -35,8 +35,19 @@ abstract class BasePolicy
 
     abstract protected function getModelName(): ?string;
 
+    /**
+     * @return bool
+     * Override this method to add extra general validation logic
+     * that applies to all actions in the policy.
+     */
+    protected function extraGeneralValidation(): bool
+    {
+        return true;
+    }
+
     protected function can(User $user, string $action, $model = null): bool
     {
+        if (!$this->extraGeneralValidation()) return false;
         if ($user->isRoot()) return true;
         $permission = $this->permissions[$action] ?? null;
         if (!$permission) return false;

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Landlord;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class UpdatePermissionRequest extends FormRequest
 {
@@ -11,7 +12,8 @@ class UpdatePermissionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        $permission = $this->route('permission');
+        return Gate::allows('update', $permission);
     }
 
     /**
@@ -22,7 +24,8 @@ class UpdatePermissionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['nullable', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:1000'],
         ];
     }
 }

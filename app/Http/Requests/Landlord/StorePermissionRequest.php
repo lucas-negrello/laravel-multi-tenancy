@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Landlord;
 
+use App\Models\Landlord\Permission;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class StorePermissionRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class StorePermissionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Gate::allows('create', Permission::class);
     }
 
     /**
@@ -22,7 +24,8 @@ class StorePermissionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:1000'],
         ];
     }
 }
