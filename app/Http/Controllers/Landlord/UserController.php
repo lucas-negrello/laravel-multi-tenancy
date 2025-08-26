@@ -102,7 +102,8 @@ class UserController extends Controller
         } else {
             $this->authorize('delete', $user);
             $tenant = tenant();
-            $user->detachTenant($tenant->getKey());
+            if ($tenant)
+                $user->detachTenant($tenant->getKey());
             if ($user->tenants()->count() === 0)
                 $user->delete();
         }
