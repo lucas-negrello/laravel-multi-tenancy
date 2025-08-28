@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Landlord;
+namespace App\Http\Controllers\Api\Landlord;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;

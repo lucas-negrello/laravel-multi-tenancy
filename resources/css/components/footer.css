@@ -1,0 +1,5 @@
+.default-footer {
+    height: var(--footer-h);
+    @apply bg-gray-800 text-white;
+    @apply flex items-center justify-center w-full;
+}

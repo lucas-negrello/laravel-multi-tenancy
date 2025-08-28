@@ -1,0 +1,16 @@
+.auth {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    color: var(--text);
+}
+
+.auth-main {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}

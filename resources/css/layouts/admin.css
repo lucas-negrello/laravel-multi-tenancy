@@ -1,0 +1,10 @@
+.admin {
+    @apply flex flex-col justify-between h-screen w-screen;
+    @apply max-w-screen max-h-screen;
+    @apply overflow-y-hidden overflow-x-hidden;
+}
+
+.admin-main {
+    @apply grow shrink basis-auto;
+    @apply p-4 overflow-y-auto;
+}

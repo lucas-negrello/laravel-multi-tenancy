@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Landlord;
+namespace App\Http\Controllers\Api\Landlord;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
@@ -9,6 +9,7 @@ use App\Http\Requests\Landlord\UpdatePermissionRequest;
 use App\Models\Landlord\Permission;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
+
 class PermissionController extends Controller
 {
     /**
