@@ -34,7 +34,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('users.index'));
+        return redirect()->intended(route('home'));
     }
 
     public function logout(Request $request, AuthService $authService): RedirectResponse
@@ -56,6 +56,6 @@ class AuthController extends Controller
         Auth::login($result['user']);
         $request->session()->regenerate();
 
-        return redirect()->intended(route('users.index'));
+        return redirect()->intended(route('home'));
     }
 }

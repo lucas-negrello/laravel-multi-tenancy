@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web\Landlord;
+namespace App\Http\Controllers\Web\Common;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Landlord\StoreUserRequest;
@@ -12,9 +12,12 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
+
+    const BASE_PATH = 'pages.common.users.';
+
     public function index(): View
     {
-        return view('pages.admin.users.index');
+        return view(self::BASE_PATH . 'index');
     }
 
     public function data(Request $request)
@@ -30,32 +33,32 @@ class UserController extends Controller
 
     public function show(User $user): View
     {
-        return view('pages.admin.users.show', compact('user'));
+        return view(self::BASE_PATH . 'show', compact('user'));
     }
 
     public function create(): View
     {
-        return view('pages.admin.users.create');
+        return view(self::BASE_PATH . 'create');
     }
 
     public function store(StoreUserRequest $request): View
     {
-        return view('pages.admin.users.store');
+        return view(self::BASE_PATH . 'store');
     }
 
     public function edit(User $user): View
     {
-        return view('pages.admin.users.edit', compact('user'));
+        return view(self::BASE_PATH . 'edit', compact('user'));
     }
 
     public function update(UpdateUserRequest $request, User $user): View
     {
-        return view('pages.admin.users.update');
+        return view(self::BASE_PATH . 'update');
     }
 
     public function destroy(User $user): View
     {
-        return view('pages.admin.users.destroy');
+        return view(self::BASE_PATH . 'destroy');
     }
 
 }

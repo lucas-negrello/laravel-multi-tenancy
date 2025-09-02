@@ -1,0 +1,12 @@
+.navbar-container {
+    @apply bg-gray-200 w-full h-12;
+    @apply flex justify-between items-center;
+}
+
+.navbar-left-content {
+
+}
+
+.navbar-right-content {
+
+}

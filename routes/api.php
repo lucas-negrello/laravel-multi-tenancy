@@ -6,35 +6,10 @@ use App\Http\Controllers\Api\Landlord\RoleController;
 use App\Http\Controllers\Api\Landlord\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+require __DIR__ . '/api/auth.php';
+require __DIR__ . '/api/common.php';
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/me', [AuthController::class, 'me']);
-
-
-    Route::group([
-        'prefix' => 'admin',
-        'as' => 'admin.',
-        'middleware' => ['landlord.context'],
-    ], function() {
-        Route::apiResources([
-            'users' => UserController::class,
-            'roles' => RoleController::class,
-            'permissions' => PermissionController::class,
-        ]);
-    });
-
-    Route::group([
-        'prefix' => 'tenant',
-        'as' => 'tenant.',
-        'middleware' => ['tenant.context'],
-    ], function() {
-        Route::apiResources([
-            'users' => UserController::class,
-            'roles' => RoleController::class,
-        ]);
-    });
-
+    require __DIR__ . '/api/admin.php';
+    require __DIR__ . '/api/tenant.php';
 });
